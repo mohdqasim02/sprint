@@ -22,22 +22,40 @@ const sub = function(cell1, cell2, cell3) {
   return memory[cell3];
 };
 
-const display = function() {
-  return JSON.stringify(memory);
+const execute = function(code) {
+  let index = 0;
+
+  while(index < code.length) {
+    switch(code[index]) {
+      case 0: 
+        assign(code[++index], code[++index]);
+        break;
+
+      case 1:
+        add(code[++index], code[++index], code[++index]);
+        break;
+
+      case 2:
+        sub(code[++index], code[++index], code[++index]);
+        break;
+
+      case 9:
+        return;
+    }
+    index++;
+  }
 };
 
 const main = function() {
   const code = [0, 2, 100, 0, 1, 101, 1, 100, 101, 102, 2, 100, 101, 103, 9];
   load(code);
-  assign(2, 100);
-  assign(1, 101);
-  add(100, 101, 102);
-  sub(100, 101, 103);
+  execute(code);
   console.log(memory);
 };
+
+main();
 
 exports.load = load;
 exports.assign = assign;
 exports.add = add;
 exports.sub = sub;
-exports.display = display;
